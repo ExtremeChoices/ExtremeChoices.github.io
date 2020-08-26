@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Extreme Choices</title>
+</head>
+<body>
+<div id="gamemenu">
+<h1 id="menuh1">Extreme Choices</h1>
+<div id="break">
+1<br>1<br>1<br>
+</div>
+<p class="mbutton" onclick="play()" id="mbutton">Play</p><p id="br">1</p>
+<p class="mbutton" onclick="stats()" id="mbutton">Stats</p><p id="br">1</p>
+<p class="mbutton" onclick="shop()" id="mbutton">Shop</p>
+</div>
+<div id="game">
+<p id="pointsgained"></p>
+<p onclick="choose(this.innerHTML)" id="o1">Option 1</p>
+<p onclick="choose(this.innerHTML)" id="o2">Option 2</p><br><br>
+<p style="text-align: center;">Which will you pick...</p>
+</div>
+<div id="stats">
+<h1>Stats</h1>
+<b>Points: </b><points id="points">0</points><br>
+<b>Rounds: </b><points id="rounds">0</points><br><br>
+<p onclick="gamemenu()" id="btm">Back To Menu</p><br>
+</div>
+<div id="shop">
+<h1>Shop</h1>
+<b>Shop will come next update</b><br><br>
+<p onclick="gamemenu()" id="btm">Back To Menu</p><br>
+</div>
+</body>
+<style>
+html {
+  user-select: none;
+}
+#shop {
+  margin: auto;
+  width: 40%;
+  text-align: center;
+  background-color: #a871a8;
+  border-radius: 11px;
+  display: none; 
+}
+#btm {
+  cursor: pointer;
+  background-color: #949494;
+  width: 25%;
+  margin: auto;
+  border-radius: 5px;
+  padding: 2px;
+  border: solid black;
+}
+#btm:hover {
+  cursor: pointer;
+  background-color: #7d7d7d;
+  width: 25%;
+  margin: auto;
+  border-radius: 5px;
+  padding: 2px;
+}
+#stats {
+  margin: auto;
+  width: 40%;
+  text-align: center;
+  background-color: #a871a8;
+  border-radius: 11px;
+  display: none;
+}
+#pointsgained {
+  text-align: center;
+  margin: auto;
+  width: 75%;
+  background-color: #f28df1;
+  border-radius: 11px;
+  font-size: 125%;
+  padding: 5px;
+}
+#o1 {
+  background-color: red;
+  width: 40%;
+  padding: 4%;
+  float: left;
+  text-align: center;
+  border-radius: 7px;
+}
+#o1:hover {
+  background-color: #d60202;
+  width: 40%;
+  padding: 4%;
+  float: left;
+  text-align: center;
+  border-radius: 7px;
+}
+#o2 {
+  background-color: #80f2ff;
+  width: 40%;
+  padding: 4%;
+  float: right;
+  text-align: center;
+  border-radius: 7px;
+}
+#o2:hover {
+  background-color: #6ad2de;
+  width: 40%;
+  padding: 4%;
+  float: right;
+  text-align: center;
+  border-radius: 7px;
+}
+#br {
+  font-size: 3px;
+  visibility: hidden;
+}
+#break {
+  visibility: hidden;
+}
+#mbutton {
+  margin: auto;
+  font-size: 70%;
+  width: 30%;
+  background-color: #b394ae;
+  border: solid #635561;
+  border-radius: 11px;
+  padding: 5px;
+  cursor: pointer;
+}
+#mbutton:hover {
+  margin: auto;
+  font-size: 70%;
+  width: 30%;
+  background-color: #997a94;
+  border: solid #635561;
+  border-radius: 11px;
+  padding: 5px;
+  cursor: pointer;
+}
+#gamemenu {
+  text-align: center;
+  font-size: 220%;
+}
+#gamemenu h1 {
+  color: #fa70ff;
+}
+#game {
+  display: none;
+}
+</style>
+<script>
+var extreme = ["Be in jail for 10 years", "Always be angry", "Smell like skunk", "Bite a PC", "Eat monkey brains", "Lick a dog turd", "Be popular but poor"];
+var extreme2 = ["Lose 10 years off your life", "Never be happy", "Sneeze every day", "Bite a TV", "Eat horse poop", "Lick a toilet seat", "Be unpopular but rich"];
+console.log(extreme.length);
+console.log(extreme2.length);
+var rounds = 0;
+var storage = window.localStorage;
+var points = storage.getItem("points");
+if (points == null || points == undefined || points == 0) {
+  points = 0;
+}
+var points = parseInt(points);
+var trounds = storage.getItem("trounds");
+if (trounds == null || trounds == undefined || trounds == 0) {
+  trounds = 0;
+}
+var trounds = parseInt(trounds);
+var devicewidth = window.innerWidth/11;
+document.getElementById("menuh1").style.fontSize = devicewidth + "px";
+var devicewidth2 = window.innerWidth/15;
+document.getElementById("o1").style.fontSize = devicewidth2 + "px";
+document.getElementById("o2").style.fontSize = devicewidth2 + "px";
+function play() {
+  var rc = Math.floor(Math.random() * extreme.length);
+  var leftc = extreme[rc];
+  var rightc = extreme2[rc];
+  document.getElementById("gamemenu").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  document.getElementById("o1").innerHTML = leftc;
+  document.getElementById("o2").innerHTML = rightc;
+}
+function choose(txt) {
+if (rounds == 4) {
+  document.getElementById("gamemenu").style.display = "block";
+  document.getElementById("game").style.display = "none";
+  rounds = 0;
+  trounds++;
+  storage.setItem("trounds", trounds);
+  document.getElementById("rounds").innerHTML = trounds;
+} else {
+  if (txt == "Be in jail for 10 years") {
+    points += 5;
+    document.getElementById("pointsgained").innerHTML = "5 Points Gained";
+  }
+  else if (txt == "Never be happy") {
+    points += 4;
+    document.getElementById("pointsgained").innerHTML = "4 Points Gained";
+  }
+  else if (txt == "Eat monkey brains") {
+    points += 8;
+    document.getElementById("pointsgained").innerHTML = "8 Points Gained";
+  }
+  else if (txt == "Lick a dog turd") {
+    points += 6;
+    document.getElementById("pointsgained").innerHTML = "6 Points Gained";
+  }
+  else {
+    var random = Math.floor(2 + Math.random() * (6 - 2));
+    points += random;
+    document.getElementById("pointsgained").innerHTML = random+" Points Gained";
+  }
+  storage.setItem("points", points);
+  document.getElementById("points").innerHTML = points;
+  storage.setItem("trounds", trounds);
+  document.getElementById("rounds").innerHTML = trounds;
+  var rc = Math.floor(Math.random() * extreme.length);
+  var leftc = extreme[rc];
+  var rightc = extreme2[rc];
+  document.getElementById("o1").innerHTML = leftc;
+  document.getElementById("o2").innerHTML = rightc;
+  rounds++;
+  trounds++;
+}
+}
+function stats() {
+  document.getElementById("points").innerHTML = points;
+  document.getElementById("stats").style.display = "block";
+  document.getElementById("gamemenu").style.display = "none";
+  document.getElementById("rounds").innerHTML = trounds;
+}
+function gamemenu() {
+  document.getElementById("stats").style.display = "none";
+  document.getElementById("shop").style.display = "none";
+  document.getElementById("gamemenu").style.display = "block";
+}
+function shop() {
+  document.getElementById("shop").style.display = "block";
+  document.getElementById("gamemenu").style.display = "none";
+}
+</script>
+</html>
