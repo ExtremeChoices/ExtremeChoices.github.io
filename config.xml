@@ -17,4 +17,5 @@
       James Kittle
   </author>
   <preference name="android-minSdkVersion" value="17" />
+  <icon src="icon.png" />
 </widget>
