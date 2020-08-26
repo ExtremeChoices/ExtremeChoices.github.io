@@ -16,6 +16,5 @@
   <author href="https://extremechoices.github.io/" email="jjsk2007@gmail.com">
       James Kittle
   </author>
-  <preference name="android-minSdkVersion" value="17" />
-  <icon src="icon.png" />
+  <icon src="icon.png"/>
 </widget>
