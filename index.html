@@ -7,7 +7,7 @@
 <div id="gamemenu">
 <h1 id="menuh1">Extreme Choices</h1>
 <div id="break">
-1<br>1<br>1<br>
+1<br>1<br>
 </div>
 <p class="mbutton" onclick="play()" id="mbutton">Play</p><p id="br">1</p>
 <p class="mbutton" onclick="stats()" id="mbutton">Stats</p><p id="br">1</p>
@@ -22,16 +22,35 @@
 <div id="stats">
 <h1>Stats</h1>
 <b>Points: </b><points id="points">0</points><br>
-<b>Rounds: </b><points id="rounds">0</points><br><br>
+<b>Rounds: </b><points id="rounds">0</points><br>
+<b>Version: </b><points id="versionCode">1.0.1</points><br><br>
 <p onclick="gamemenu()" id="btm">Back To Menu</p><br>
 </div>
 <div id="shop">
 <h1>Shop</h1>
-<b>Shop will come next update</b><br><br>
+<p id="warning"></p>
+<label for="themes">Choose a theme:</label>
+
+<select id="themes">
+  <option value="rb">Red &amp; Blue</option>
+  <option value="go">Green &amp; Orange</option>
+  <option value="pp">Pink &amp; Purple</option>
+  <option value="yl">Yellow &amp; Light Green</option>
+  <option value="bo">Brown &amp; Orange</option>
+  <option value="bt">Blue &amp; Teal</option>
+</select>
+<button onclick="changetheme()">Change</button>
+<br>
 <p onclick="gamemenu()" id="btm">Back To Menu</p><br>
 </div>
 </body>
 <style>
+:root {
+  --themecoloro1: red;
+  --themecoloro1h: #d60202;
+  --themecoloro2: #80f2ff;
+  --themecoloro2h: #6ad2de;
+}
 html {
   user-select: none;
 }
@@ -78,7 +97,7 @@ html {
   padding: 5px;
 }
 #o1 {
-  background-color: red;
+  background-color: var(--themecoloro1);
   width: 40%;
   padding: 4%;
   float: left;
@@ -86,7 +105,7 @@ html {
   border-radius: 7px;
 }
 #o1:hover {
-  background-color: #d60202;
+  background-color: var(--themecoloro1h);
   width: 40%;
   padding: 4%;
   float: left;
@@ -94,7 +113,7 @@ html {
   border-radius: 7px;
 }
 #o2 {
-  background-color: #80f2ff;
+  background-color: var(--themecoloro2);
   width: 40%;
   padding: 4%;
   float: right;
@@ -102,7 +121,7 @@ html {
   border-radius: 7px;
 }
 #o2:hover {
-  background-color: #6ad2de;
+  background-color: var(--themecoloro2h);
   width: 40%;
   padding: 4%;
   float: right;
@@ -148,8 +167,10 @@ html {
 }
 </style>
 <script>
-var extreme = ["Be in jail for 10 years", "Always be angry", "Smell like skunk", "Bite a PC", "Eat monkey brains", "Lick a dog turd", "Be popular but poor"];
-var extreme2 = ["Lose 10 years off your life", "Never be happy", "Sneeze every day", "Bite a TV", "Eat horse poop", "Lick a toilet seat", "Be unpopular but rich"];
+var root = document.documentElement;
+var lastEC;
+var extreme = ["Always have a splinter", "Never work again", "Always be completely alone", "Constantly have dry eyes", "Eat pizza that tastes like poop", "Be a cannable", "Murder your mom", "Eat a cat", "Be tall but obese", "Be super ugly", "Be really smart but not understandable", "Eat 10 pounds of human brains", "Your mom dies", "Kill a cat", "Be really overweight", "Get ran over by a semi-truck", "Get squished by a elephant", "Be in jail for 10 years", "Always be angry", "Smell like skunk", "Bite a PC", "Eat monkey brains", "Lick a dog turd", "Be popular but poor"];
+var extreme2 = ["Always have a hangnail", "Never sleep again", "Always be with annoying people", "Constantly have a runny nose","Eat poop that tastes like pizza", "Be a murderer", "Murder your dad", "Eat a dog","Be small but skinny", "Be super small", "Be really dumb but understandable", "Drink 10 liters of human blood", "Your dad dies", "Kill a dog", "Be really underweight", "Get in a severe car accident", "Get eaten by cannibals", "Die 10 years earlier", "Never be happy", "Sneeze every day", "Bite a TV", "Eat horse poop", "Lick a toilet seat", "Be unpopular but rich"];
 console.log(extreme.length);
 console.log(extreme2.length);
 var rounds = 0;
@@ -160,6 +181,10 @@ if (points == null || points == undefined || points == 0) {
 }
 var points = parseInt(points);
 var trounds = storage.getItem("trounds");
+var themebought = storage.getItem("themebought");
+if (themebought == null || themebought == undefined) {
+  themebought = "false";
+}
 if (trounds == null || trounds == undefined || trounds == 0) {
   trounds = 0;
 }
@@ -169,8 +194,11 @@ document.getElementById("menuh1").style.fontSize = devicewidth + "px";
 var devicewidth2 = window.innerWidth/15;
 document.getElementById("o1").style.fontSize = devicewidth2 + "px";
 document.getElementById("o2").style.fontSize = devicewidth2 + "px";
+var devicewidth3 = window.innerWidth/22;
+document.getElementById("break").style.fontSize = devicewidth3 + "px";
 function play() {
   var rc = Math.floor(Math.random() * extreme.length);
+  lastEC = rc;
   var leftc = extreme[rc];
   var rightc = extreme2[rc];
   document.getElementById("gamemenu").style.display = "none";
@@ -199,7 +227,7 @@ if (rounds == 4) {
     points += 8;
     document.getElementById("pointsgained").innerHTML = "8 Points Gained";
   }
-  else if (txt == "Lick a dog turd") {
+  else if (txt == "Lick a dog turd" || txt == "Eat 10 pounds of human brains") {
     points += 6;
     document.getElementById("pointsgained").innerHTML = "6 Points Gained";
   }
@@ -213,6 +241,11 @@ if (rounds == 4) {
   storage.setItem("trounds", trounds);
   document.getElementById("rounds").innerHTML = trounds;
   var rc = Math.floor(Math.random() * extreme.length);
+  if (rc == lastEC) {
+    rc = extreme.length - rc;
+	console.log("Double Detected! "+extreme[lastEC]+" and "+extreme2[lastEC]);
+  }
+  lastEC = rc;
   var leftc = extreme[rc];
   var rightc = extreme2[rc];
   document.getElementById("o1").innerHTML = leftc;
@@ -235,6 +268,113 @@ function gamemenu() {
 function shop() {
   document.getElementById("shop").style.display = "block";
   document.getElementById("gamemenu").style.display = "none";
+}
+function changetheme() {
+if (themebought == "false") {
+  if (points >= 500) {
+    document.getElementById("warning").style.display = "block";
+    document.getElementById("warning").innerHTML = "You bought themes for 500 points!";
+	points -= 500;
+	themebought = "true";
+	storage.setItem("themebought", themebought);
+	storage.setItem("points", points);
+	var theme = document.getElementById("themes").value;
+    var tco1;
+    var tco1h;
+    var tco2;
+    var tco2h;
+    if (theme == "rb") {
+      tco1 = "#ff0000";
+	  tco1h = "#d60202";
+	  tco2 = "#80f2ff";
+	  tco2h = "#6ad2de";
+    }
+    if (theme == "go") {
+      tco1 = "#17ff32";
+	  tco1h = "#14db32";
+	  tco2 = "#ffc117";
+	  tco2h = "#dba614";
+    }
+    if (theme == "pp") {
+      tco1 = "#ed13c2";
+	  tco1h = "#d411b7";
+	  tco2 = "#d413ed";
+	  tco2h = "#bd11d4";
+    }
+    if (theme == "yl") {
+      tco1 = "#fcfc62";
+	  tco1h = "#deda57";
+	  tco2 = "#79fc62";
+	  tco2h = "#6bde57";
+    }
+    if (theme == "bo") {
+      tco1 = "#8a6e28";
+	  tco1h = "#735b21";
+	  tco2 = "#e0b700";
+	  tco2h = "#ba9800";
+    }
+    if (theme == "bt") {
+      tco1 = "#4fc9c5";
+	  tco1h = "#44adaa";
+	  tco2 = "#54d19b";
+	  tco2h = "#44ad80";
+    }
+    root.style.setProperty('--themecoloro1', tco1);
+    root.style.setProperty('--themecoloro1h', tco1h);
+    root.style.setProperty('--themecoloro2', tco2);
+    root.style.setProperty('--themecoloro2h', tco2h);
+  } else {
+    document.getElementById("warning").style.display = "block";
+    document.getElementById("warning").innerHTML = "You do not have enough points!";
+  }
+}
+else if (themebought == "true") {
+  var theme = document.getElementById("themes").value;
+  var tco1;
+  var tco1h;
+  var tco2;
+  var tco2h;
+  if (theme == "rb") {
+    tco1 = "#ff0000";
+	tco1h = "#d60202";
+	tco2 = "#80f2ff";
+	tco2h = "#6ad2de";
+  }
+  if (theme == "go") {
+    tco1 = "#17ff32";
+	tco1h = "#14db32";
+	tco2 = "#ffc117";
+	tco2h = "#dba614";
+  }
+  if (theme == "pp") {
+    tco1 = "#ed13c2";
+	tco1h = "#d411b7";
+	tco2 = "#d413ed";
+	tco2h = "#bd11d4";
+  }
+  if (theme == "yl") {
+    tco1 = "#fcfc62";
+	tco1h = "#deda57";
+	tco2 = "#79fc62";
+	tco2h = "#6bde57";
+  }
+  if (theme == "bo") {
+    tco1 = "#8a6e28";
+	tco1h = "#735b21";
+	tco2 = "#e0b700";
+	tco2h = "#ba9800";
+  }
+  if (theme == "bt") {
+    tco1 = "#4fc9c5";
+	tco1h = "#44adaa";
+	tco2 = "#54d19b";
+	tco2h = "#44ad80";
+  }
+  root.style.setProperty('--themecoloro1', tco1);
+  root.style.setProperty('--themecoloro1h', tco1h);
+  root.style.setProperty('--themecoloro2', tco2);
+  root.style.setProperty('--themecoloro2h', tco2h);
+}
 }
 </script>
 </html>
